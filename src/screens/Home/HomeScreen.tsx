@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
   petContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: verticalScale(80),
   },
   petAnimation: {
     width: scale(250),
