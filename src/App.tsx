@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { StatusBar, Image } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Sound from 'react-native-sound';
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 import RootNavigator from '@/navigation/RootNavigator';
 import { theme } from '@/styles/theme';
 
@@ -31,10 +33,12 @@ function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
-      <RootNavigator />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+        <RootNavigator />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
