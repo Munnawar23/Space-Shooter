@@ -9,6 +9,7 @@ export const colors = {
   // Text
   text: "#3B2A1A",           // Deep warm brown, like Shiba's outline strokes
   subtext: "#8C6E52",        // Mid-tone earthy brown for secondary labels
+  readingText: "#000000",
 
   // Brand & Actions
   primary: "#F5A623",        // Shiba golden amber — the dominant fur color

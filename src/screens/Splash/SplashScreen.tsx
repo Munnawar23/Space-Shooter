@@ -8,6 +8,8 @@ import { theme } from "@/styles/theme";
 import { wp, hp } from "@/helpers/dimensionHelpers";
 import { RootStackParamList } from "@/navigation/RootNavigator";
 
+import { storage, StorageKeys } from "@/utils/storage";
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Splash">;
 
 export default function SplashScreen() {
@@ -16,7 +18,8 @@ export default function SplashScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace("Home");
+      // TODO: Remove for production — always show Onboarding for testing
+      navigation.replace("Onboarding");
     }, 2500);
 
     return () => clearTimeout(timer);
