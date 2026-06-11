@@ -11,6 +11,7 @@ Based on the application structure, the app is a virtual pet simulation featurin
   - **Playing:** Interact and play with your pet to keep it happy.
   - **Sleeping:** Put your pet to rest to regain energy.
 - **Status Tracking:** Visual indicators (via `ProgressBar` components) to track the pet's vital stats like health, happiness, or cleanliness.
+  - **Dynamic Pet Mood:** If happiness, energy, and cleanliness are all above 70%, the pet is happy! Otherwise, the pet will become angry.
 - **Interactive UI:** Features such as `FallingEmojis` for visual rewards, and custom modals for alerts and interactions.
 - **Onboarding & Splash:** Smooth introductory experience for new users.
 
