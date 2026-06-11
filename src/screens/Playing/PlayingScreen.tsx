@@ -217,6 +217,7 @@ export default function PlayingScreen() {
         }}
         showCloseButton={false}
         icon={<Sparkles size={scale(36)} color={theme.colors.sunshine} fill={theme.colors.sunshine} />}
+        showCelebrationEffect={true}
       />
     </ImageBackground>
   );

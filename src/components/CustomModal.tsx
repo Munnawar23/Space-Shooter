@@ -5,6 +5,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
 import Button from '@/components/Button';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import FallingEmojis from '@/components/FallingEmojis';
 
 interface CustomModalProps {
   visible: boolean;
@@ -17,6 +18,7 @@ interface CustomModalProps {
   onSecondaryButtonPress?: () => void;
   showCloseButton?: boolean;
   icon?: React.ReactNode;
+  showCelebrationEffect?: boolean;
 }
 
 export default function CustomModal({
@@ -30,6 +32,7 @@ export default function CustomModal({
   onSecondaryButtonPress,
   showCloseButton = true,
   icon,
+  showCelebrationEffect = false,
 }: CustomModalProps) {
   const handleClose = () => {
     ReactNativeHapticFeedback.trigger('impactMedium', {
@@ -57,6 +60,7 @@ export default function CustomModal({
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
+        {showCelebrationEffect && <FallingEmojis />}
         <View style={styles.card}>
           {/* Close / Cross Button */}
           {showCloseButton && (

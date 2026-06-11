@@ -8,12 +8,22 @@ import { theme } from "@/styles/theme";
 import { wp } from "@/helpers/dimensionHelpers";
 import { RootStackParamList } from "@/navigation/RootNavigator";
 import LoaderBar from "./components/LoaderBar";
+import { storage, StorageKeys } from "@/utils/storage";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Splash">;
 
 export default function SplashScreen() {
   const navigation = useNavigation<NavigationProp>();
   const S = createStyles();
+
+  const handleComplete = () => {
+    const hasCompletedOnboarding = storage.getBoolean(StorageKeys.HAS_COMPLETED_ONBOARDING);
+    if (hasCompletedOnboarding) {
+      navigation.replace("Home");
+    } else {
+      navigation.replace("Onboarding");
+    }
+  };
 
   return (
     <View style={S.container}>
@@ -25,10 +35,11 @@ export default function SplashScreen() {
           style={S.lottieAnimation}
         />
       </View>
-      <LoaderBar onComplete={() => navigation.replace("Onboarding")} duration={3000} />
+      <LoaderBar onComplete={handleComplete} duration={3000} />
     </View>
   );
 }
+
 
 const createStyles = () =>
   StyleSheet.create({
