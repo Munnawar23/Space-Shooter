@@ -75,10 +75,11 @@ export default function SleepingScreen() {
         <View style={S.petContainer}>
           {isSleeping && <ZzzEffect />}
           {isSleeping ? (
-            <Image
-              source={require('@/assets/images/sleeping-dog-clean.png')}
-              style={S.petImage}
-              resizeMode="contain"
+            <LottieView
+              source={require('@/assets/animations/blessed-cat.json')}
+              autoPlay
+              loop
+              style={S.petAnimation}
             />
           ) : (
             <LottieView
