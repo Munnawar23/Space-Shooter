@@ -5,6 +5,7 @@ export interface PetState {
   energy: number;
   happiness: number;
   lastUpdated: number;
+  isSleeping: boolean;
 }
 
 const initialState: PetState = {
@@ -12,6 +13,7 @@ const initialState: PetState = {
   energy: 25,
   happiness: 25,
   lastUpdated: Date.now(),
+  isSleeping: false,
 }; 
 
 const petSlice = createSlice({
@@ -30,17 +32,34 @@ const petSlice = createSlice({
       state.happiness = Math.min(100, state.happiness + 5);
       state.lastUpdated = Date.now();
     },
+    setIsSleeping: (state, action: PayloadAction<boolean>) => {
+      state.isSleeping = action.payload;
+      state.lastUpdated = Date.now();
+    },
     applyDecay: (state, action: PayloadAction<number>) => {
       const now = action.payload;
       const diffMs = now - state.lastUpdated;
       const diffSeconds = diffMs / 1000;
 
       if (diffSeconds > 0) {
+        // Hunger and Happiness always decay
         const decayAmount = diffSeconds * 0.25; // 1% every 4 seconds
-        // Apply decay and cap at 0
         state.hunger = Math.max(0, state.hunger - decayAmount);
-        state.energy = Math.max(0, state.energy - decayAmount);
         state.happiness = Math.max(0, state.happiness - decayAmount);
+
+        if (state.isSleeping) {
+          // Sleep gains 1% energy every 2 seconds = 0.5% per second
+          const energyGain = diffSeconds * 0.5;
+          state.energy = Math.min(100, state.energy + energyGain);
+          
+          // Auto wake up at 100%
+          if (state.energy >= 100) {
+            state.isSleeping = false;
+          }
+        } else {
+          // Decays normally when awake
+          state.energy = Math.max(0, state.energy - decayAmount);
+        }
         
         // Update the timestamp
         state.lastUpdated = now;
@@ -50,5 +69,5 @@ const petSlice = createSlice({
   },
 });
 
-export const { feed, sleep, play, applyDecay, resetPet } = petSlice.actions;
+export const { feed, sleep, play, setIsSleeping, applyDecay, resetPet } = petSlice.actions;
 export default petSlice.reducer;

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
@@ -10,17 +11,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { feed, sleep, play, applyDecay } from '@/store/petSlice';
 import LottieView from 'lottie-react-native';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
 import { Settings, Utensils, Moon, Smile as SmileIcon } from 'lucide-react-native';
 import StatBar from './Components/StatBar';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import ActionButton from './Components/ActionButton';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/navigation/RootNavigator';
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
   const insets = useSafeAreaInsets();
-  const { hunger, energy, happiness } = useSelector((state: RootState) => state.pet);
+  const { hunger, energy, happiness, isSleeping } = useSelector((state: RootState) => state.pet);
 
   // Apply decay on mount and set up an interval to decay over time
   useEffect(() => {
@@ -48,7 +53,7 @@ export default function HomeScreen() {
         dispatch(feed());
         break;
       case 'sleep':
-        dispatch(sleep());
+        navigation.navigate('Sleeping');
         break;
       case 'play':
         dispatch(play());
@@ -77,16 +82,20 @@ export default function HomeScreen() {
 
         {/* Center: Pet Animation */}
         <View style={styles.petContainer}>
-          <LottieView
-            source={
-              hunger > 80 && energy > 80 && happiness > 80
-                ? require('@/assets/animations/cat.json')
-                : require('@/assets/animations/angry-cat.json')
-            }
-            autoPlay
-            loop
-            style={styles.petAnimation}
-          />
+          {isSleeping ? (
+            <Text style={styles.sleepingText}>Dog is sleeping</Text>
+          ) : (
+            <LottieView
+              source={
+                hunger > 80 && energy > 80 && happiness > 80
+                  ? require('@/assets/animations/cat.json')
+                  : require('@/assets/animations/angry-cat.json')
+              }
+              autoPlay
+              loop
+              style={styles.petAnimation}
+            />
+          )}
         </View>
 
         {/* Bottom Actions */}
@@ -133,8 +142,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(20),
     paddingTop: verticalScale(16),
   },
-
-
   petContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,6 +150,14 @@ const styles = StyleSheet.create({
   petAnimation: {
     width: scale(250),
     height: scale(250),
+  },
+  sleepingText: {
+    fontFamily: theme.fontFamily.heading,
+    fontSize: moderateScale(40),
+    color: '#FFFFFF',
+    textAlign: 'center',
+    paddingHorizontal: scale(20),
+    marginTop: verticalScale(40),
   },
   actionsContainer: {
     flexDirection: 'row',
