@@ -38,7 +38,3 @@ The app is built using **React Native** and incorporates several powerful librar
 - **`react-native-sound`:** Enables playing audio effects and background music during interactions.
 - **`react-native-haptic-feedback`:** Provides tactile feedback (vibrations) to make interactions feel more realistic and engaging.
 - **`react-native-keyboard-aware-scroll-view`:** Ensures input fields are never blocked by the device keyboard.
-
----
-
-_Generated based on the source code structure and `package.json` dependencies._
