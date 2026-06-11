@@ -7,6 +7,8 @@ import { store } from '@/store/store';
 import RootNavigator from '@/navigation/RootNavigator';
 import { theme } from '@/styles/theme';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 function App() {
   useEffect(() => {
     // Enable playback in silence mode
@@ -34,10 +36,12 @@ function App() {
 
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
-        <RootNavigator />
-      </SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+          <RootNavigator />
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

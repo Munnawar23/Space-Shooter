@@ -13,7 +13,7 @@ import { feed, sleep, play, applyDecay } from '@/store/petSlice';
 import LottieView from 'lottie-react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
-import { Settings, Utensils, Moon, Smile as SmileIcon } from 'lucide-react-native';
+import { Settings, Utensils, Moon, Smile as SmileIcon, Bath } from 'lucide-react-native';
 import StatBar from './Components/StatBar';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import ActionButton from './Components/ActionButton';
@@ -25,7 +25,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
   const insets = useSafeAreaInsets();
-  const { hunger, energy, happiness, isSleeping } = useSelector((state: RootState) => state.pet);
+  const { hunger, energy, happiness, isSleeping, cleanliness } = useSelector((state: RootState) => state.pet);
 
   // Apply decay on mount and set up an interval to decay over time
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function HomeScreen() {
         navigation.navigate('Sleeping');
         break;
       case 'play':
-        dispatch(play());
+        navigation.navigate('Bathing');
         break;
     }
   };
@@ -73,10 +73,10 @@ export default function HomeScreen() {
           <StatBar
             hunger={hunger}
             energy={energy}
-            happiness={happiness}
+            cleanliness={cleanliness}
             hungerIcon={<Utensils size={20} color={theme.colors.text} />}
             energyIcon={<Moon size={20} color={theme.colors.text} />}
-            happinessIcon={<SmileIcon size={20} color={theme.colors.text} />}
+            cleanlinessIcon={<Bath size={20} color={theme.colors.text} />}
           />
         </View>
 
@@ -114,8 +114,8 @@ export default function HomeScreen() {
             onPress={() => handleAction('sleep')}
           />
           <ActionButton
-            label="Play"
-            icon={<SmileIcon size={24} color={theme.colors.card} />}
+            label="Bath"
+            icon={<Bath size={24} color={theme.colors.card} />}
             color={theme.colors.sky}
             onPress={() => handleAction('play')}
           />

@@ -5,12 +5,14 @@ import SplashScreen from '@/screens/Splash/SplashScreen';
 import OnboardingScreen from '@/screens/Onboarding/OnboardingScreen';
 import HomeScreen from '@/screens/Home/HomeScreen';
 import SleepingScreen from '@/screens/Sleeping/SleepingScreen';
+import BathingScreen from '@/screens/Bathing/BathingScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
   Onboarding: undefined;
   Home: undefined;
   Sleeping: undefined;
+  Bathing: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +30,7 @@ export default function RootNavigator() {
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Sleeping" component={SleepingScreen} />
+        <Stack.Screen name="Bathing" component={BathingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
