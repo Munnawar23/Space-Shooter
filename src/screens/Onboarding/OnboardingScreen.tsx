@@ -19,13 +19,11 @@ import Button from '@/components/Button';
 import { storage, StorageKeys } from '@/utils/storage';
 import { RootStackParamList } from '@/navigation/RootNavigator';
 import Sound from 'react-native-sound';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSequence,
   withSpring,
-  runOnJS,
 } from 'react-native-reanimated';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Onboarding'>;
@@ -66,7 +64,7 @@ export default function OnboardingScreen() {
       if (error) {
         console.warn('Failed to load button sound:', error);
       } else {
-        clickSound.play((success) => {
+        clickSound.play((_success) => {
           clickSound.release();
         });
       }

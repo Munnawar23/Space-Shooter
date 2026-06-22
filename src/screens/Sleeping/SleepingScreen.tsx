@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ImageBackground,
   Image,
-  TouchableOpacity,
   Vibration,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LottieView from 'lottie-react-native';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
-import { wp, hp } from '@/helpers/dimensionHelpers';
+import { wp } from '@/helpers/dimensionHelpers';
 import Button from '@/components/Button';
 import ProgressBar from '@/components/ProgressBar';
 import { RootStackParamList } from '@/navigation/RootNavigator';
-import { ChevronLeft, Sparkles } from 'lucide-react-native';
+import {  Sparkles } from 'lucide-react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { setIsSleeping, applyDecay } from '@/store/petSlice';

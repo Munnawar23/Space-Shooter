@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -59,7 +59,7 @@ const FallingEmoji = ({ index }: { index: number }) => {
         false
       )
     );
-  }, []);
+  }, [delay, duration, rotate, startX, translateX, translateY]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {

@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import {View,Text,StyleSheet,ImageBackground} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LottieView from 'lottie-react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
-import { Settings, Utensils, Moon, Smile as SmileIcon, Bath } from 'lucide-react-native';
+import { Moon, Smile as SmileIcon, Bath } from 'lucide-react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
-import { feed, sleep, play, applyDecay } from '@/store/petSlice';
+import { applyDecay } from '@/store/petSlice';
 import StatBar from './Components/StatBar';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import ActionButton from './Components/ActionButton';
 import { RootStackParamList } from '@/navigation/RootNavigator';
 import CustomModal from '@/components/CustomModal';
@@ -26,7 +19,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
   const insets = useSafeAreaInsets();
-  const { hunger, energy, happiness, isSleeping, cleanliness } = useSelector((state: RootState) => state.pet);
+  const { energy, happiness, isSleeping, cleanliness } = useSelector((state: RootState) => state.pet);
   const [isSleepingModalVisible, setIsSleepingModalVisible] = useState(false);
 
   // Apply decay on mount and set up an interval to decay over time
@@ -42,12 +35,6 @@ export default function HomeScreen() {
     return () => clearInterval(interval);
   }, [dispatch]);
 
-  const triggerHaptic = () => {
-    ReactNativeHapticFeedback.trigger('impactMedium', {
-      enableVibrateFallback: true,
-      ignoreAndroidSystemSettings: false,
-    });
-  };
 
   const handleAction = (action: 'play' | 'sleep' | 'bath') => {
     if (isSleeping && (action === 'play' || action === 'bath')) {

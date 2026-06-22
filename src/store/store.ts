@@ -21,7 +21,7 @@ export const store = configureStore({
   reducer: {
     pet: petReducer,
   },
-  preloadedState: loadPreloadedState(),
+  preloadedState: loadPreloadedState(), //We feed the loaded MMKV data into the store immediately upon startup, so the pet's stats are restored instantly.
 });
 
 // Subscribe to store changes and persist to MMKV

@@ -47,9 +47,9 @@ const petSlice = createSlice({
       state.lastUpdated = Date.now();
     },
     applyDecay: (state, action: PayloadAction<number>) => {
-      const now = action.payload;
-      const diffMs = now - state.lastUpdated;
-      const diffSeconds = diffMs / 1000;
+        const now = action.payload;
+        const diffMs = now - state.lastUpdated;
+        const diffSeconds = diffMs / 1000;
 
       if (diffSeconds > 0) {
         // All stats decay 1% every 10 seconds
