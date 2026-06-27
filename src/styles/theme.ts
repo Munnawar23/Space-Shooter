@@ -1,24 +1,24 @@
 import { moderateScale } from "react-native-size-matters";
 
 export const colors = {
-  background: "#FFF8EE",     // Warm cream, matches the soft bathroom tile warmth
-  backgroundAlt: "#E8F6FF",  // Light sky blue for outdoor/play screens
-  card: "#FFFDF7",           // Off-white card surface, slightly warm
-  text: "#3B2A1A",           // Deep warm brown, like Shiba's outline strokes
-  subtext: "#8C6E52",        // Mid-tone earthy brown for secondary labels
-  readingText: "#000000",
-  primary: "#F5A623",        // Shiba golden amber — the dominant fur color
-  primaryDark: "#D4861A",    // Deeper amber for pressed states / shadows
-  accent: "#E8533A",         // Coral red from the bandana and soap bottle
-  accentLight: "#FFCAB0",    // Pale salmon for accent backgrounds / tints
-  sky: "#3AAFE8",            // Bright outdoor sky blue from the play scene
-  grass: "#5BBF3E",          // Lush grass green from the yard
-  grassDark: "#3E9126",      // Deeper green for shadows on grass
-  sunshine: "#FFD93D",       // Sunny yellow from the smiling sun
-  foam: "#E8F4FF",           // Soapy bubble/foam near-white blue
-  border: "#F0DFC8",         // Warm beige border, harmonizes with background
-  statBarBackground: "#EDE0D0", // Soft warm fill for stat bar tracks
-  shadow: "#C49A6C",         // Warm brown shadow tone
+  background: "#060814",     // Deep Space Dark Blue/Black
+  backgroundAlt: "#0b112c",  // Slightly lighter space blue
+  card: "#111736",           // Futuristic card surface
+  text: "#ffffff",           // Crisp white text
+  subtext: "#8f9bb3",        // Cool gray secondary text
+  readingText: "#ffffff",
+  primary: "#00f3ff",        // Neon Cyan — player color
+  primaryDark: "#00b2bd",    // Deep Cyan
+  accent: "#ff007f",         // Neon Magenta — accent/alien color
+  accentLight: "#ffb3d9",    // Pale Magenta
+  sky: "#00f3ff",            // Neon Cyan
+  grass: "#39ff14",          // Neon green
+  grassDark: "#1b9c0c",      // Darker neon green
+  sunshine: "#ffea00",       // Electric yellow — items/flame color
+  foam: "#172047",           // Dark space grid / track
+  border: "#1e295d",         // Dark blue border
+  statBarBackground: "#172047", // Dark fill for stat bar tracks
+  shadow: "#000000",         // Solid shadow
 };
 
 // ─── Font Families ──────────────────────────────────────────────────────────
