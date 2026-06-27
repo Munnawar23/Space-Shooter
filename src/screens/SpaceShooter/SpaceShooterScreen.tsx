@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -22,6 +22,10 @@ import { useNavigation } from '@react-navigation/native';
 import { X } from 'lucide-react-native';
 import { theme } from '@/styles/theme';
 import { wp, hp } from '@/helpers/dimensionHelpers';
+import Sound from 'react-native-sound';
+
+// Enable playback in silence mode (Android/iOS)
+Sound.setCategory('Playback');
 
 import SpaceBackground from './components/SpaceBackground';
 import PlayerShip from './components/PlayerShip';
@@ -72,6 +76,45 @@ export default function SpaceShooterScreen() {
   const { width, height } = useWindowDimensions();
   const navigation = useNavigation();
 
+  // ── shoot sound (sfc.wav) ─────────────────────────────────────────────────
+  const shootSoundRef = useRef<Sound | null>(null);
+  const isSoundPlaying = useRef(false);
+
+  useEffect(() => {
+    const sound = new Sound('sfc.wav', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.warn('Failed to load sfc.wav', error);
+        return;
+      }
+      sound.setNumberOfLoops(-1); // loop indefinitely
+      sound.setVolume(1.0);
+      shootSoundRef.current = sound;
+    });
+
+    return () => {
+      // cleanup on unmount
+      if (shootSoundRef.current) {
+        shootSoundRef.current.stop();
+        shootSoundRef.current.release();
+        shootSoundRef.current = null;
+      }
+    };
+  }, []);
+
+  const startShootSound = useCallback(() => {
+    if (shootSoundRef.current && !isSoundPlaying.current) {
+      isSoundPlaying.current = true;
+      shootSoundRef.current.play();
+    }
+  }, []);
+
+  const stopShootSound = useCallback(() => {
+    if (shootSoundRef.current && isSoundPlaying.current) {
+      isSoundPlaying.current = false;
+      shootSoundRef.current.stop();
+    }
+  }, []);
+
   // player
   const playerX      = useSharedValue(width / 2);
   const playerY      = useSharedValue(height - 120);
@@ -108,6 +151,7 @@ export default function SpaceShooterScreen() {
       startX.value   = playerX.value;
       startY.value   = playerY.value;
       isDragging.value = true;
+      runOnJS(startShootSound)();
     })
     .onUpdate((e) => {
       'worklet';
@@ -119,10 +163,12 @@ export default function SpaceShooterScreen() {
     .onEnd(() => {
       'worklet';
       isDragging.value = false;
+      runOnJS(stopShootSound)();
     })
     .onFinalize(() => {
       'worklet';
       isDragging.value = false;
+      runOnJS(stopShootSound)();
     });
 
   // ── main game loop (UI thread, 60 FPS) ───────────────────────────────────

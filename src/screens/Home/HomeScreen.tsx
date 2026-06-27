@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, StatusBar, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -51,34 +51,20 @@ export default function HomeScreen() {
     // Enable playback in silence mode
     Sound.setCategory('Playback');
 
-    // Load button sound (button.mp3) with fallback support
-    try {
-      const sound = new Sound(require('@/assets/sfx/button.mp3'), (error) => {
-        if (error) {
-          console.log('Failed to load button sound directly, trying fallback:', error);
-          try {
-            const asset = Image.resolveAssetSource(require('@/assets/sfx/button.mp3'));
-            const fallbackSound = new Sound(asset.uri, '', (err) => {
-              if (err) {
-                console.log('Failed fallback sound load:', err);
-              } else {
-                buttonSoundRef.current = fallbackSound;
-              }
-            });
-          } catch (e) {
-            console.log('Error in fallback load:', e);
-          }
-        } else {
-          buttonSoundRef.current = sound;
-        }
-      });
-    } catch (e) {
-      console.log('Error loading button sound asset:', e);
-    }
+    // Load button sound using correct react-native-sound API
+    const sound = new Sound('button.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.warn('Failed to load button.mp3:', error);
+        return;
+      }
+      sound.setVolume(1.0);
+      buttonSoundRef.current = sound;
+    });
 
     return () => {
       if (buttonSoundRef.current) {
         buttonSoundRef.current.release();
+        buttonSoundRef.current = null;
       }
     };
   }, []);
