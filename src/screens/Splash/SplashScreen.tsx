@@ -23,7 +23,7 @@ export default function SplashScreen() {
     <View style={S.container}>
       <View style={S.animationContainer}>
         <LottieView
-          source={require("@/assets/animations/smart-cat.json")}
+          source={require("@/assets/animations/space.json")}
           autoPlay
           loop
           style={S.lottieAnimation}
@@ -39,7 +39,7 @@ const createStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.accent,
+      backgroundColor: "#060814",
       alignItems: "center",
       justifyContent: "center",
     },

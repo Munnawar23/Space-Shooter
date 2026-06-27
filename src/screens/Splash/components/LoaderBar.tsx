@@ -21,15 +21,15 @@ export default function LoaderBar({ onComplete, duration = 3000 }: LoaderBarProp
       useNativeDriver: false,
     }).start();
 
-    // Discrete number steps 0 to 10
-    const stepDuration = duration / 10;
+    // Discrete number steps 0 to 100
+    const stepDuration = duration / 100;
     const interval = setInterval(() => {
       setProgressVal((prev) => {
-        if (prev < 10) {
+        if (prev < 100) {
           return prev + 1;
         }
         clearInterval(interval);
-        return 10;
+        return 100;
       });
     }, stepDuration);
 
@@ -52,7 +52,7 @@ export default function LoaderBar({ onComplete, duration = 3000 }: LoaderBarProp
 
   return (
     <View style={styles.loaderContainer}>
-      <Text style={styles.loaderText}>LOADING... {progressVal}/10</Text>
+      <Text style={styles.loaderText}>LOADING... {progressVal}%</Text>
       <View style={styles.progressBarTrack}>
         <Animated.View style={[styles.progressBarFill, { width: widthInterpolate }]} />
       </View>
@@ -69,28 +69,24 @@ const styles = StyleSheet.create({
   loaderText: {
     fontFamily: theme.fontFamily.heading,
     fontSize: scale(18),
-    color: theme.colors.card,
+    color: "#ffffff",
     marginBottom: verticalScale(12),
     textTransform: "uppercase",
     letterSpacing: scale(1.5),
   },
   progressBarTrack: {
     width: "100%",
-    height: verticalScale(24),
-    borderRadius: scale(12),
-    borderWidth: 3.5,
-    borderColor: theme.colors.text,
-    backgroundColor: theme.colors.statBarBackground,
+    height: verticalScale(16),
+    borderRadius: scale(8),
+    borderWidth: 2,
+    borderColor: "#1e295d",
+    backgroundColor: "#111736",
     overflow: "hidden",
-    shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 0,
     elevation: 4,
   },
   progressBarFill: {
     height: "100%",
-    backgroundColor: theme.colors.primary,
-    borderRadius: scale(8),
+    backgroundColor: "#00f3ff",
+    borderRadius: scale(6),
   },
 });

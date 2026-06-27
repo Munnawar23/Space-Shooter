@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, useWindowDimensions, StatusBar } from 'react-native';
+import { View, StyleSheet, Text, useWindowDimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { Canvas, Rect } from '@shopify/react-native-skia';
 import { useSharedValue, useFrameCallback, withTiming, withRepeat } from 'react-native-reanimated';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { X } from 'lucide-react-native';
 import { theme } from '@/styles/theme';
 import { wp, hp } from '@/helpers/dimensionHelpers';
 
@@ -11,6 +13,7 @@ import PlayerShip from './components/PlayerShip';
 
 export default function SpaceShooterScreen() {
   const { width, height } = useWindowDimensions();
+  const navigation = useNavigation();
 
   // Shared values for player state
   const playerX = useSharedValue(width / 2);
@@ -95,6 +98,14 @@ export default function SpaceShooterScreen() {
           <Text style={styles.hudValue}>{score.value}</Text>
         </View>
       </View>
+
+      {/* Close/Cross Button to return Home */}
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => navigation.goBack()}
+      >
+        <X size={20} color="#00f3ff" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -135,5 +146,16 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: theme.fontFamily.heading,
     marginTop: 2,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: hp(6),
+    right: wp(5),
+    backgroundColor: 'rgba(17, 23, 54, 0.85)',
+    padding: 8,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: '#00f3ff',
+    zIndex: 10,
   },
 });

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, StatusBar, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Trophy, Play } from 'lucide-react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withSequence, withTiming, runOnJS } from 'react-native-reanimated';
+import Sound from 'react-native-sound';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
 import { storage } from '@/utils/storage';
@@ -18,8 +19,14 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [highScore, setHighScore] = useState(0);
 
-  // Logo floating animation using Reanimated
+  // Logo floating animation
   const logoTranslateY = useSharedValue(0);
+
+  // Button scale animation
+  const buttonScale = useSharedValue(1);
+
+  // Sound ref
+  const buttonSoundRef = useRef<Sound | null>(null);
 
   useEffect(() => {
     // Load high score
@@ -41,6 +48,29 @@ export default function HomeScreen() {
       -1,
       true
     );
+
+    // Enable playback in silence mode
+    Sound.setCategory('Playback');
+
+    // Load button sound (button.ogg)
+    try {
+      const asset = Image.resolveAssetSource(require('@/assets/sfx/button.ogg'));
+      const sound = new Sound(asset.uri, '', (error) => {
+        if (error) {
+          console.log('Failed to load button sound:', error);
+        } else {
+          buttonSoundRef.current = sound;
+        }
+      });
+    } catch (e) {
+      console.log('Error loading button sound asset:', e);
+    }
+
+    return () => {
+      if (buttonSoundRef.current) {
+        buttonSoundRef.current.release();
+      }
+    };
   }, []);
 
   // Update high score whenever screen gains focus
@@ -61,6 +91,36 @@ export default function HomeScreen() {
       transform: [{ translateY: logoTranslateY.value }],
     };
   });
+
+  const animatedButtonStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: buttonScale.value }],
+    };
+  });
+
+  const navigateToGame = () => {
+    navigation.navigate('SpaceShooter');
+  };
+
+  const handleLaunchPress = () => {
+    // Play button sound
+    if (buttonSoundRef.current) {
+      buttonSoundRef.current.stop(() => {
+        buttonSoundRef.current?.play();
+      });
+    }
+
+    // Button scale animation sequence: down, up (pop), then back to normal
+    buttonScale.value = withSequence(
+      withTiming(0.9, { duration: 80 }),
+      withTiming(1.15, { duration: 120 }),
+      withTiming(1.0, { duration: 80 }, (finished) => {
+        if (finished) {
+          runOnJS(navigateToGame)();
+        }
+      })
+    );
+  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
@@ -94,13 +154,12 @@ export default function HomeScreen() {
 
         {/* Action Buttons */}
         <View style={styles.menuButtons}>
-          <TouchableOpacity
-            style={styles.playButton}
-            onPress={() => navigation.navigate('SpaceShooter')}
-          >
-            <Play size={24} color="#060814" style={styles.buttonIcon} />
-            <Text style={styles.playButtonText}>LAUNCH MISSION</Text>
-          </TouchableOpacity>
+          <Pressable onPress={handleLaunchPress}>
+            <Animated.View style={[styles.playButton, animatedButtonStyle]}>
+              <Play size={24} color="#060814" style={styles.buttonIcon} />
+              <Text style={styles.playButtonText}>LAUNCH MISSION</Text>
+            </Animated.View>
+          </Pressable>
         </View>
       </View>
 
