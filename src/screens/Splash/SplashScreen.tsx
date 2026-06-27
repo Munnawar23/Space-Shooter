@@ -8,7 +8,6 @@ import { theme } from "@/styles/theme";
 import { wp } from "@/helpers/dimensionHelpers";
 import { RootStackParamList } from "@/navigation/RootNavigator";
 import LoaderBar from "./components/LoaderBar";
-import { storage, StorageKeys } from "@/utils/storage";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Splash">;
 
@@ -17,12 +16,7 @@ export default function SplashScreen() {
   const S = createStyles();
 
   const handleComplete = () => {
-    const hasCompletedOnboarding = storage.getBoolean(StorageKeys.HAS_COMPLETED_ONBOARDING);
-    if (hasCompletedOnboarding) {
-      navigation.replace("Home");
-    } else {
-      navigation.replace("Onboarding");
-    }
+    navigation.replace("Home");
   };
 
   return (

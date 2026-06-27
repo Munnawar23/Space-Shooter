@@ -2,19 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '@/screens/Splash/SplashScreen';
-import OnboardingScreen from '@/screens/Onboarding/OnboardingScreen';
 import HomeScreen from '@/screens/Home/HomeScreen';
-import SleepingScreen from '@/screens/Sleeping/SleepingScreen';
-import BathingScreen from '@/screens/Bathing/BathingScreen';
-import PlayingScreen from '@/screens/Playing/PlayingScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
-  Onboarding: undefined;
   Home: undefined;
-  Sleeping: undefined;
-  Bathing: undefined;
-  Playing: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -29,11 +21,7 @@ export default function RootNavigator() {
         }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Sleeping" component={SleepingScreen} />
-        <Stack.Screen name="Bathing" component={BathingScreen} />
-        <Stack.Screen name="Playing" component={PlayingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

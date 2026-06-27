@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import {View,Text,StyleSheet,ImageBackground} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import LottieView from 'lottie-react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { theme } from '@/styles/theme';
@@ -12,15 +10,11 @@ import { RootState } from '@/store/store';
 import { applyDecay } from '@/store/petSlice';
 import StatBar from './Components/StatBar';
 import ActionButton from './Components/ActionButton';
-import { RootStackParamList } from '@/navigation/RootNavigator';
-import CustomModal from '@/components/CustomModal';
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
   const insets = useSafeAreaInsets();
   const { energy, happiness, isSleeping, cleanliness } = useSelector((state: RootState) => state.pet);
-  const [isSleepingModalVisible, setIsSleepingModalVisible] = useState(false);
 
   // Apply decay on mount and set up an interval to decay over time
   useEffect(() => {
@@ -35,23 +29,8 @@ export default function HomeScreen() {
     return () => clearInterval(interval);
   }, [dispatch]);
 
-
   const handleAction = (action: 'play' | 'sleep' | 'bath') => {
-    if (isSleeping && (action === 'play' || action === 'bath')) {
-      setIsSleepingModalVisible(true);
-      return;
-    }
-    switch (action) {
-      case 'play':
-        navigation.navigate('Playing');
-        break;
-      case 'sleep':
-        navigation.navigate('Sleeping');
-        break;
-      case 'bath':
-        navigation.navigate('Bathing');
-        break;
-    }
+    console.log(`${action.toUpperCase()} button clicked!`);
   };
 
   return (
@@ -114,20 +93,6 @@ export default function HomeScreen() {
           />
         </View>
       </View>
-      <CustomModal
-        visible={isSleepingModalVisible}
-        onClose={() => setIsSleepingModalVisible(false)}
-        title="SHHH... 💤"
-        message="Your pet is sleeping peacefully right now! You cannot play or bathe it until it wakes up."
-        buttonTitle="Go to Bedroom"
-        onButtonPress={() => {
-          setIsSleepingModalVisible(false);
-          navigation.navigate('Sleeping');
-        }}
-        secondaryButtonTitle="Close"
-        onSecondaryButtonPress={() => setIsSleepingModalVisible(false)}
-        icon={<Moon size={scale(36)} color={theme.colors.sunshine} fill={theme.colors.sunshine} />}
-      />
     </ImageBackground>
   );
 }
