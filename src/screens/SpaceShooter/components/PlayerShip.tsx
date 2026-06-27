@@ -1,46 +1,43 @@
 import React from 'react';
-import { Group, Path, LinearGradient, vec } from '@shopify/react-native-skia';
+import {
+  Group,
+  Image,
+  useImage,
+} from '@shopify/react-native-skia';
 import { useDerivedValue, SharedValue } from 'react-native-reanimated';
 
+const SHIP_IMG = require('../../../assets/player_ship_v2.png');
+
 interface PlayerShipProps {
-  playerX: SharedValue<number>;
-  playerY: SharedValue<number>;
+  playerX:       SharedValue<number>;
+  playerY:       SharedValue<number>;
   thrusterScale: SharedValue<number>;
 }
 
-const playerShipPath = 'M 0 -22 L 5 -8 L 18 10 L 8 10 L 0 3 L -8 10 L -18 10 L -5 -8 Z';
-const playerThrusterPath = 'M -5 10 L 0 20 L 5 10 Z';
+export default function PlayerShip({ playerX, playerY }: PlayerShipProps) {
+  const shipTransform = useDerivedValue(() => [
+    { translateX: playerX.value },
+    { translateY: playerY.value },
+  ]);
 
-export default function PlayerShip({ playerX, playerY, thrusterScale }: PlayerShipProps) {
-  const drawPlayer = useDerivedValue(() => {
-    return [
-      { translateX: playerX.value },
-      { translateY: playerY.value },
-    ];
-  });
-
-  const thrusterTransform = useDerivedValue(() => {
-    return [
-      { scaleY: thrusterScale.value },
-      { translateY: 2 },
-    ];
-  });
+  const shipImage = useImage(SHIP_IMG);
 
   return (
-    <Group transform={drawPlayer}>
-      {/* Glowing engine flame */}
-      <Group transform={thrusterTransform}>
-        <Path path={playerThrusterPath} color="#ffea00" />
-      </Group>
-
-      {/* Main Ship Path */}
-      <Path path={playerShipPath} color="#00f3ff">
-        <LinearGradient
-          start={vec(0, -22)}
-          end={vec(0, 15)}
-          colors={['#00f3ff', '#111736']}
+    <Group transform={shipTransform}>
+      {shipImage && (
+        <Image
+          image={shipImage}
+          x={-35}
+          y={-35}
+          width={70}
+          height={70}
+          fit="contain"
+          // In case the AI image generator gave us a solid black background,
+          // 'screen' blend mode treats black as completely transparent!
+          // If the image is already transparent, it just renders normally.
+          blendMode="screen"
         />
-      </Path>
+      )}
     </Group>
   );
 }

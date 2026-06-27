@@ -15,7 +15,7 @@ export const ENEMY_CONFIGS: EnemyType[] = [
     maxHp: 1,
     scoreValue: 10,
     color: '#39ff14', // Neon Green Scout
-    speed: 4,
+    speed: 7,
     path: 'M 0 15 L -15 -15 L 0 -5 L 15 -15 Z',
   },
   {
@@ -24,7 +24,7 @@ export const ENEMY_CONFIGS: EnemyType[] = [
     maxHp: 3,
     scoreValue: 30,
     color: '#ffea00', // Electric Yellow Fighter
-    speed: 2.5,
+    speed: 4.5,
     path: 'M 0 20 L -20 -15 L -10 -5 L 0 -20 L 10 -5 L 20 -15 Z',
   },
   {
@@ -33,7 +33,7 @@ export const ENEMY_CONFIGS: EnemyType[] = [
     maxHp: 5,
     scoreValue: 50,
     color: '#ff007f', // Neon Magenta Bomber
-    speed: 1.5,
+    speed: 3,
     path: 'M 0 25 L -30 -10 L -15 -25 L 0 -10 L 15 -25 L 30 -10 Z',
   },
 ];
@@ -72,4 +72,6 @@ export interface Particle {
   size: number;
   alpha: number;
   color: string;
+  life: number;     // current life 0..1
+  maxLife: number;  // total life frames
 }
