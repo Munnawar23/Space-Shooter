@@ -25,6 +25,7 @@ interface ButtonProps {
   disabled?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  icon?: React.ReactNode;
 }
 
 export default function Button({
@@ -35,6 +36,7 @@ export default function Button({
   disabled = false,
   style,
   textStyle,
+  icon,
 }: ButtonProps) {
   const S = createStyles(variant, disabled);
   const scaleVal = useSharedValue(1);
@@ -83,9 +85,12 @@ export default function Button({
         {loading ? (
           <ActivityIndicator color={S.text.color as string} />
         ) : (
-          <Text style={[S.text, textStyle]}>
-            {title}
-          </Text>
+          <>
+            {icon}
+            <Text style={[S.text, textStyle, icon ? { marginLeft: scale(8) } : null]}>
+              {title}
+            </Text>
+          </>
         )}
       </Pressable>
     </Animated.View>
@@ -149,6 +154,7 @@ const createStyles = (variant: 'primary' | 'accent' | 'secondary', disabled: boo
     button: {
       height: verticalScale(48),
       borderRadius: scale(16),
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: scale(24),
